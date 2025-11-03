@@ -464,6 +464,7 @@ export default function PresentacionRK2() {
         <div className="flex justify-between items-center mb-8">
           <button
             onClick={() => setLocation("/runge-kutta")}
+            onClick={() => setLocation("/runge-kutta")}
             className="flex items-center px-5 py-3 rounded-xl bg-white text-gray-700 hover:bg-gray-100 transition shadow-md"
           >
             <Home className="w-5 h-5 mr-2" />

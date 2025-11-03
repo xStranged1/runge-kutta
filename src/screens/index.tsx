@@ -244,7 +244,7 @@ const IndexScreen = () => {
 
                 {/* Tabs */}
                 <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-                    <div className="flex border-b">
+                    <div className="flex">
                         <button
                             onClick={() => setActiveTab('ejemplo')}
                             className={`flex-1 px-6 py-4 font-semibold transition-colors ${activeTab === 'ejemplo'
