@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'wouter';
 import { ChevronRight } from 'lucide-react';
 import { Line } from 'react-chartjs-2';
+import Latex from 'react-latex-next';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -73,7 +74,9 @@ const CompareScreen = () => {
 
         <div className="bg-white rounded-lg shadow-lg p-8 mb-6">
           <h1 className="text-4xl font-bold text-gray-800 mb-4">Resolución con RK2 (Punto Medio)</h1>
-          <p className="text-gray-600 mb-4">Ecuación: y' = 4x + y, y(1) = 2, paso h = {h}</p>
+          <p className="text-gray-600 mb-4">
+            Ecuación: <Latex>{`$y' = 4x + y$`}</Latex>, <Latex>{`$y(1) = 2$`}</Latex>, paso <Latex>{`$h = ${h}$`}</Latex>
+          </p>
 
           {/* Gráfica */}
           <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
@@ -84,13 +87,17 @@ const CompareScreen = () => {
           <div className="mb-6">
             <h2 className="text-2xl font-bold text-blue-700 mb-3">Iteraciones Punto Medio (RK2)</h2>
             {rk2Iter.slice(1).map(iter => (
-              <div key={iter.n} className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-2">
-                <p className="font-bold">Iteración {iter.n}:</p>
-                <p>xₙ = { (iter.x - h).toFixed(4) }, yₙ = { rk2Iter[iter.n - 1].y.toFixed(6) }</p>
-                <p>k₁ = h * f(xₙ, yₙ) = {iter.k1.toFixed(6)}</p>
-                <p>x_medio = {iter.x_m.toFixed(4)}, y_medio = {iter.y_m.toFixed(6)}</p>
-                <p>k₂ = h * f(x_medio, y_medio) = {iter.k2.toFixed(6)}</p>
-                <p className="font-semibold text-blue-800">yₙ₊₁ = yₙ + k₂ = {iter.y.toFixed(6)}</p>
+              <div key={iter.n} className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-3">
+                <p className="font-bold text-lg mb-2">Iteración {iter.n}:</p>
+                <div className="space-y-2 text-sm">
+                  <p><Latex>{`$x_n = ${(iter.x - h).toFixed(4)},\\quad y_n = ${rk2Iter[iter.n - 1].y.toFixed(6)}$`}</Latex></p>
+                  <p><Latex>{`$k_1 = h \\cdot f(x_n, y_n) = ${iter.k1.toFixed(6)}$`}</Latex></p>
+                  <p><Latex>{`$x_{\\text{medio}} = ${iter.x_m.toFixed(4)},\\quad y_{\\text{medio}} = ${iter.y_m.toFixed(6)}$`}</Latex></p>
+                  <p><Latex>{`$k_2 = h \\cdot f(x_{\\text{medio}}, y_{\\text{medio}}) = ${iter.k2.toFixed(6)}$`}</Latex></p>
+                  <p className="font-semibold text-blue-800 text-base">
+                    <Latex>{`$y_{n+1} = y_n + k_2 = ${iter.y.toFixed(6)}$`}</Latex>
+                  </p>
+                </div>
               </div>
             ))}
           </div>
@@ -98,7 +105,9 @@ const CompareScreen = () => {
           {/* Resultado final */}
           <div className="bg-green-50 border-2 border-green-400 rounded-lg p-6 mt-4">
             <h3 className="text-2xl font-bold text-green-800 mb-2">Resultado Final</h3>
-            <p className="text-xl font-mono">y({xf}) ≈ {rk2Iter[rk2Iter.length -1].y.toFixed(6)}</p>
+            <p className="text-xl font-mono">
+              <Latex>{`$y(${xf}) \\approx ${rk2Iter[rk2Iter.length -1].y.toFixed(6)}$`}</Latex>
+            </p>
           </div>
         </div>
       </div>

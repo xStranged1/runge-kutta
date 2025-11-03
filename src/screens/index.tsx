@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Calculator, ChevronRight, Plus } from 'lucide-react';
 import { Link } from "wouter";
+import Latex from "react-latex-next";
 
 const IndexScreen = () => {
     const [activeTab, setActiveTab] = useState('ejemplo');
@@ -63,11 +64,11 @@ const IndexScreen = () => {
                 y: y.toFixed(6),
                 f_n: f_n.toFixed(6),
                 k1: k1.toFixed(6),
-                k1_calc: `${ejemploData.h} × (-3 × ${x.toFixed(1)}² × ${y.toFixed(6)})`,
+                k1_calc: `${ejemploData.h} \\times (-3 \\times ${x.toFixed(1)}^2 \\times ${y.toFixed(6)})`,
                 x_medio: x_medio.toFixed(2),
                 y_medio: y_medio.toFixed(6),
                 f_medio: f_medio.toFixed(6),
-                f_medio_calc: `-3 × (${x_medio.toFixed(2)})² × ${y_medio.toFixed(6)}`,
+                f_medio_calc: `-3 \\times (${x_medio.toFixed(2)})^2 \\times ${y_medio.toFixed(6)}`,
                 y_next: y_next.toFixed(6)
             });
 
@@ -214,8 +215,8 @@ const IndexScreen = () => {
                     <div className="bg-indigo-50 border-l-4 border-indigo-600 p-4 rounded">
                         <h2 className="font-semibold text-indigo-900 mb-2">Fórmula del Método:</h2>
                         <div className="font-mono text-sm space-y-2 text-gray-700">
-                            <div>k₁ = h · f(x<sub>n</sub>, y<sub>n</sub>)</div>
-                            <div>y<sub>n+1</sub> = y<sub>n</sub> + h · f(x<sub>n</sub> + h/2, y<sub>n</sub> + k₁/2)</div>
+                            <div><Latex>{`$k_1 = h \\cdot f(x_n, y_n)$`}</Latex></div>
+                            <div><Latex>{`$y_{n+1} = y_n + h \\cdot f(x_n + \\frac{h}{2}, y_n + \\frac{k_1}{2})$`}</Latex></div>
                         </div>
                     </div>
                 </div>
@@ -249,11 +250,11 @@ const IndexScreen = () => {
                             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-6">
                                 <h3 className="text-xl font-bold text-gray-800 mb-4">Problema:</h3>
                                 <div className="space-y-2 text-gray-700">
-                                    <p className="font-mono text-lg">f(x, y(x)) = y' = -3x²y</p>
-                                    <p>Condiciones iniciales: y(0) = 3</p>
-                                    <p>Dominio: 0 ≤ x ≤ 0.5</p>
-                                    <p>Paso: h = 0.1</p>
-                                    <p className="font-semibold text-indigo-600 mt-3">Hallar: y(0.5)</p>
+                                    <p className="font-mono text-lg"><Latex>{`$f(x, y(x)) = y' = -3x^2y$`}</Latex></p>
+                                    <p>Condiciones iniciales: <Latex>{`$y(0) = 3$`}</Latex></p>
+                                    <p>Dominio: <Latex>{`$0 \\leq x \\leq 0.5$`}</Latex></p>
+                                    <p>Paso: <Latex>{`$h = 0.1$`}</Latex></p>
+                                    <p className="font-semibold text-indigo-600 mt-3">Hallar: <Latex>{`$y(0.5)$`}</Latex></p>
                                 </div>
                             </div>
 
@@ -261,8 +262,8 @@ const IndexScreen = () => {
                                 <h3 className="text-xl font-bold text-gray-800 mb-4">Ordenada Genérica:</h3>
                                 <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                                     <div className="font-mono text-sm space-y-2">
-                                        <p>k₁ = h · f(x<sub>n</sub>, y<sub>n</sub>) = h · (-3x<sub>n</sub>² · y<sub>n</sub>)</p>
-                                        <p>y<sub>n+1</sub> = y<sub>n</sub> + h · f(x<sub>n</sub> + h/2, y<sub>n</sub> + k₁/2)</p>
+                                        <p><Latex>{`$k_1 = h \\cdot f(x_n, y_n) = h \\cdot (-3x_n^2 \\cdot y_n)$`}</Latex></p>
+                                        <p><Latex>{`$y_{n+1} = y_n + h \\cdot f(x_n + \\frac{h}{2}, y_n + \\frac{k_1}{2})$`}</Latex></p>
                                     </div>
                                 </div>
                             </div>
@@ -273,39 +274,39 @@ const IndexScreen = () => {
                                 <div key={idx} className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg p-6 mb-4 border border-indigo-200">
                                     <div className="flex items-center gap-2 mb-4">
                                         <ChevronRight className="text-indigo-600" />
-                                        <h4 className="text-lg font-bold text-indigo-900">Iteración {iter.n}: n = {iter.n - 1}</h4>
+                                        <h4 className="text-lg font-bold text-indigo-900">Iteración {iter.n}: <Latex>{`$n = ${iter.n - 1}$`}</Latex></h4>
                                     </div>
 
                                     <div className="space-y-3 text-gray-700">
                                         <div className="bg-white p-3 rounded border border-indigo-100">
                                             <p className="font-semibold text-indigo-700">Valores iniciales:</p>
-                                            <p className="font-mono ml-4">x<sub>{iter.n - 1}</sub> = {iter.x}</p>
-                                            <p className="font-mono ml-4">y<sub>{iter.n - 1}</sub> = {iter.y}</p>
+                                            <p className="font-mono ml-4"><Latex>{`$x_{${iter.n - 1}} = ${iter.x}$`}</Latex></p>
+                                            <p className="font-mono ml-4"><Latex>{`$y_{${iter.n - 1}} = ${iter.y}$`}</Latex></p>
                                         </div>
 
                                         <div className="bg-white p-3 rounded border border-indigo-100">
-                                            <p className="font-semibold text-indigo-700">Paso 1: Calcular k₁</p>
-                                            <p className="font-mono ml-4 text-sm">f(x<sub>{iter.n - 1}</sub>, y<sub>{iter.n - 1}</sub>) = {iter.f_n}</p>
-                                            <p className="font-mono ml-4 text-sm">k₁ = {iter.k1_calc}</p>
-                                            <p className="font-mono ml-4">k₁ = {iter.k1}</p>
+                                            <p className="font-semibold text-indigo-700">Paso 1: Calcular <Latex>{`$k_1$`}</Latex></p>
+                                            <p className="font-mono ml-4 text-sm"><Latex>{`$f(x_{${iter.n - 1}}, y_{${iter.n - 1}}) = ${iter.f_n}$`}</Latex></p>
+                                            <p className="font-mono ml-4 text-sm"><Latex>{`$k_1 = ${iter.k1_calc}$`}</Latex></p>
+                                            <p className="font-mono ml-4"><Latex>{`$k_1 = ${iter.k1}$`}</Latex></p>
                                         </div>
 
                                         <div className="bg-white p-3 rounded border border-indigo-100">
                                             <p className="font-semibold text-indigo-700">Paso 2: Calcular punto medio</p>
-                                            <p className="font-mono ml-4">x<sub>medio</sub> = {iter.x} + {ejemploData.h}/2 = {iter.x_medio}</p>
-                                            <p className="font-mono ml-4">y<sub>medio</sub> = {iter.y} + {iter.k1}/2 = {iter.y_medio}</p>
+                                            <p className="font-mono ml-4"><Latex>{`$x_{\\text{medio}} = ${iter.x} + \\frac{${ejemploData.h}}{2} = ${iter.x_medio}$`}</Latex></p>
+                                            <p className="font-mono ml-4"><Latex>{`$y_{\\text{medio}} = ${iter.y} + \\frac{${iter.k1}}{2} = ${iter.y_medio}$`}</Latex></p>
                                         </div>
 
                                         <div className="bg-white p-3 rounded border border-indigo-100">
-                                            <p className="font-semibold text-indigo-700">Paso 3: Evaluar f en el punto medio</p>
-                                            <p className="font-mono ml-4 text-sm">f({iter.x_medio}, {iter.y_medio}) = {iter.f_medio_calc}</p>
-                                            <p className="font-mono ml-4">f<sub>medio</sub> = {iter.f_medio}</p>
+                                            <p className="font-semibold text-indigo-700">Paso 3: Evaluar <Latex>{`$f$`}</Latex> en el punto medio</p>
+                                            <p className="font-mono ml-4 text-sm"><Latex>{`$f(${iter.x_medio}, ${iter.y_medio}) = ${iter.f_medio_calc}$`}</Latex></p>
+                                            <p className="font-mono ml-4"><Latex>{`$f_{\\text{medio}} = ${iter.f_medio}$`}</Latex></p>
                                         </div>
 
                                         <div className="bg-indigo-100 p-3 rounded border-2 border-indigo-300">
-                                            <p className="font-semibold text-indigo-900">Paso 4: Calcular y<sub>n+1</sub></p>
-                                            <p className="font-mono ml-4 text-sm">y<sub>{iter.n}</sub> = {iter.y} + {ejemploData.h} × {iter.f_medio}</p>
-                                            <p className="font-mono ml-4 text-xl font-bold text-indigo-700">y<sub>{iter.n}</sub> = {iter.y_next}</p>
+                                            <p className="font-semibold text-indigo-900">Paso 4: Calcular <Latex>{`$y_{n+1}$`}</Latex></p>
+                                            <p className="font-mono ml-4 text-sm"><Latex>{`$y_{${iter.n}} = ${iter.y} + ${ejemploData.h} \\times ${iter.f_medio}$`}</Latex></p>
+                                            <p className="font-mono ml-4 text-xl font-bold text-indigo-700"><Latex>{`$y_{${iter.n}} = ${iter.y_next}$`}</Latex></p>
                                         </div>
                                     </div>
                                 </div>
@@ -314,7 +315,7 @@ const IndexScreen = () => {
                             <div className="bg-green-50 border-2 border-green-400 rounded-lg p-6 mt-6">
                                 <h3 className="text-2xl font-bold text-green-800 mb-2">Resultado Final:</h3>
                                 <p className="text-xl font-mono">
-                                    y(0.5) = {ejemploIteraciones[ejemploIteraciones.length - 1].y_next}
+                                    <Latex>{`$y(0.5) = ${ejemploIteraciones[ejemploIteraciones.length - 1].y_next}$`}</Latex>
                                 </p>
                             </div>
                         </div>
@@ -337,7 +338,7 @@ const IndexScreen = () => {
                             <div className="grid md:grid-cols-2 gap-4 mb-6">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                                        Ecuación Diferencial f(x,y):
+                                        Ecuación Diferencial <Latex>{`$f(x,y)$`}</Latex>:
                                     </label>
                                     <input
                                         type="text"
@@ -350,7 +351,7 @@ const IndexScreen = () => {
 
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                                        Paso h:
+                                        Paso <Latex>{`$h$`}</Latex>:
                                     </label>
                                     <input
                                         type="text"
@@ -363,7 +364,7 @@ const IndexScreen = () => {
 
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                                        x₀ (valor inicial):
+                                        <Latex>{`$x_0$`}</Latex> (valor inicial):
                                     </label>
                                     <input
                                         type="text"
@@ -376,7 +377,7 @@ const IndexScreen = () => {
 
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                                        y₀ (condición inicial):
+                                        <Latex>{`$y_0$`}</Latex> (condición inicial):
                                     </label>
                                     <input
                                         type="text"
@@ -389,7 +390,7 @@ const IndexScreen = () => {
 
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                                        x<sub>f</sub> (valor final):
+                                        <Latex>{`$x_f$`}</Latex> (valor final):
                                     </label>
                                     <input
                                         type="text"
@@ -415,35 +416,35 @@ const IndexScreen = () => {
 
                                     {customResult.iteraciones.slice(1).map((iter, idx) => (
                                         <div key={idx} className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-lg p-4 mb-3 border border-gray-300">
-                                            <h4 className="font-bold text-indigo-900 mb-3">Iteración {iter.n} (n = {iter.n - 1}):</h4>
+                                            <h4 className="font-bold text-indigo-900 mb-3">Iteración {iter.n} (<Latex>{`$n = ${iter.n - 1}$`}</Latex>):</h4>
                                             <div className="space-y-2 text-sm">
                                                 <div className="bg-white p-2 rounded">
                                                     <p className="font-semibold text-gray-700">Valores iniciales:</p>
-                                                    <p className="font-mono ml-4">x<sub>{iter.n - 1}</sub> = {iter.x}</p>
-                                                    <p className="font-mono ml-4">y<sub>{iter.n - 1}</sub> = {iter.y}</p>
+                                                    <p className="font-mono ml-4"><Latex>{`$x_{${iter.n - 1}} = ${iter.x}$`}</Latex></p>
+                                                    <p className="font-mono ml-4"><Latex>{`$y_{${iter.n - 1}} = ${iter.y}$`}</Latex></p>
                                                 </div>
 
                                                 <div className="bg-white p-2 rounded">
-                                                    <p className="font-semibold text-gray-700">Paso 1: Calcular k₁</p>
-                                                    <p className="font-mono ml-4">f(x<sub>{iter.n - 1}</sub>, y<sub>{iter.n - 1}</sub>) = {iter.f_n}</p>
-                                                    <p className="font-mono ml-4">k₁ = h × f = {customInput.h} × {iter.f_n} = {iter.k1}</p>
+                                                    <p className="font-semibold text-gray-700">Paso 1: Calcular <Latex>{`$k_1$`}</Latex></p>
+                                                    <p className="font-mono ml-4"><Latex>{`$f(x_{${iter.n - 1}}, y_{${iter.n - 1}}) = ${iter.f_n}$`}</Latex></p>
+                                                    <p className="font-mono ml-4"><Latex>{`$k_1 = h \\times f = ${customInput.h} \\times ${iter.f_n} = ${iter.k1}$`}</Latex></p>
                                                 </div>
 
                                                 <div className="bg-white p-2 rounded">
                                                     <p className="font-semibold text-gray-700">Paso 2: Punto medio</p>
-                                                    <p className="font-mono ml-4">x<sub>medio</sub> = {iter.x_medio}</p>
-                                                    <p className="font-mono ml-4">y<sub>medio</sub> = {iter.y_medio}</p>
+                                                    <p className="font-mono ml-4"><Latex>{`$x_{\\text{medio}} = ${iter.x_medio}$`}</Latex></p>
+                                                    <p className="font-mono ml-4"><Latex>{`$y_{\\text{medio}} = ${iter.y_medio}$`}</Latex></p>
                                                 </div>
 
                                                 <div className="bg-white p-2 rounded">
                                                     <p className="font-semibold text-gray-700">Paso 3: Evaluar en punto medio</p>
-                                                    <p className="font-mono ml-4">f<sub>medio</sub> = {iter.f_medio}</p>
+                                                    <p className="font-mono ml-4"><Latex>{`$f_{\\text{medio}} = ${iter.f_medio}$`}</Latex></p>
                                                 </div>
 
                                                 <div className="bg-indigo-100 p-2 rounded border-2 border-indigo-400">
                                                     <p className="font-semibold text-indigo-900">Resultado:</p>
-                                                    <p className="font-mono ml-4 text-lg font-bold text-indigo-700">y<sub>{iter.n}</sub> = {iter.y_next}</p>
-                                                    <p className="font-mono ml-4 text-sm text-gray-600">x<sub>{iter.n}</sub> = {iter.x_next}</p>
+                                                    <p className="font-mono ml-4 text-lg font-bold text-indigo-700"><Latex>{`$y_{${iter.n}} = ${iter.y_next}$`}</Latex></p>
+                                                    <p className="font-mono ml-4 text-sm text-gray-600"><Latex>{`$x_{${iter.n}} = ${iter.x_next}$`}</Latex></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -452,7 +453,7 @@ const IndexScreen = () => {
                                     <div className="bg-green-50 border-2 border-green-400 rounded-lg p-6 mt-4">
                                         <h3 className="text-2xl font-bold text-green-800 mb-2">Resultado Final:</h3>
                                         <p className="text-xl font-mono">
-                                            y({customResult.x_final}) ≈ {customResult.resultado_final}
+                                            <Latex>{`$y(${customResult.x_final}) \\approx ${customResult.resultado_final}$`}</Latex>
                                         </p>
                                     </div>
                                 </div>
@@ -463,12 +464,12 @@ const IndexScreen = () => {
                     )}
                 </div>
                 <div className="text-center mt-6">
-  <Link href="/runge-kutta/compare">
-    <button className="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700">
-      Ejercicio 2
-    </button>
-  </Link>
-</div>
+                    <Link href="/runge-kutta/compare">
+                        <button className="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700">
+                            Ejercicio 2
+                        </button>
+                    </Link>
+                </div>
             </div>
         </div>
     );
