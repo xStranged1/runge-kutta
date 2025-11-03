@@ -4,7 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { Footer } from "./components/Footer";
 import IndexScreen from "./screens";
 import Presentations from "./screens/Presentation";
-
+import CompareScreen from './screens/CompareScreen';
 export default function App() {
 
   return (
@@ -15,6 +15,7 @@ export default function App() {
           <Switch>
             <Route path="/runge-kutta" component={IndexScreen} />
             <Route path="/presentacion" component={Presentations} />
+            <Route path="/runge-kutta/compare" component={CompareScreen} />
             <Route>404: No such page!</Route>
           </Switch>
           <Footer />
