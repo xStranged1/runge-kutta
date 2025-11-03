@@ -95,7 +95,7 @@ const sections = [
     content: (
       <div className="space-y-8 max-w-5xl mx-auto text-gray-800 py-8">
         <p className="text-xl text-center text-gray-600 mb-8">
-          Para aplicar RK2 correctamente necesitamos cumplir ciertas condiciones
+          Para aplicar RK2 necesitamos definir los siguientes elementos
         </p>
 
         <div className="grid md:grid-cols-3 gap-6 mb-6">
