@@ -5,10 +5,10 @@ import { Link } from "wouter";
 const IndexScreen = () => {
     const [activeTab, setActiveTab] = useState('ejemplo');
     const [customInput, setCustomInput] = useState({
-        equation: '-3*x^2*y',
-        x0: '0',
-        y0: '3',
-        xf: '0.5',
+        equation: '2*x*y',
+        x0: '1',
+        y0: '1',
+        xf: '1.3',
         h: '0.1'
     });
     const [customResult, setCustomResult] = useState(null);
@@ -43,22 +43,31 @@ const IndexScreen = () => {
 
         let n = 0;
         while (x < ejemploData.xf - 0.0001) {
-            const k1 = ejemploData.h * f_ejemplo(x, y);
+            // Paso 1: calcular k1
+            const f_n = f_ejemplo(x, y);
+            const k1 = ejemploData.h * f_n;
+
+            // Paso 2: calcular punto medio
             const x_medio = x + ejemploData.h / 2;
             const y_medio = y + k1 / 2;
+
+            // Paso 3: evaluar f en el punto medio
             const f_medio = f_ejemplo(x_medio, y_medio);
+
+            // Paso 4: calcular y_next
             const y_next = y + ejemploData.h * f_medio;
 
             iteraciones.push({
                 n: n + 1,
                 x: x.toFixed(1),
-                y: y.toFixed(4),
+                y: y.toFixed(6),
+                f_n: f_n.toFixed(6),
                 k1: k1.toFixed(6),
-                k1_calc: `${ejemploData.h} × (-3 × ${x.toFixed(1)}² × ${y.toFixed(4)})`,
+                k1_calc: `${ejemploData.h} × (-3 × ${x.toFixed(1)}² × ${y.toFixed(6)})`,
                 x_medio: x_medio.toFixed(2),
                 y_medio: y_medio.toFixed(6),
                 f_medio: f_medio.toFixed(6),
-                evaluacion: `${ejemploData.h} × [2 × (${x_medio.toFixed(2)}) × (${y_medio.toFixed(6)})]`,
+                f_medio_calc: `-3 × (${x_medio.toFixed(2)})² × ${y_medio.toFixed(6)}`,
                 y_next: y_next.toFixed(6)
             });
 
@@ -76,8 +85,8 @@ const IndexScreen = () => {
             // Reemplazar operadores y funciones
             let processed = expr
                 .replace(/\^/g, '**')
-                .replace(/x/g, `(${x})`)
-                .replace(/y/g, `(${y})`)
+                .replace(/\bx\b/g, `(${x})`)
+                .replace(/\by\b/g, `(${y})`)
                 .replace(/exp/g, 'Math.exp')
                 .replace(/sin/g, 'Math.sin')
                 .replace(/cos/g, 'Math.cos')
@@ -88,7 +97,7 @@ const IndexScreen = () => {
             return eval(processed);
         } catch (error) {
             console.error('Error evaluando expresión:', error);
-            return 0;
+            throw new Error('Error en la expresión matemática');
         }
     };
 
@@ -105,8 +114,13 @@ const IndexScreen = () => {
                 return;
             }
 
-            if (h <= 0 || h > Math.abs(xf - x0)) {
-                alert('El paso h debe ser positivo y menor que el intervalo');
+            if (h <= 0) {
+                alert('El paso h debe ser positivo');
+                return;
+            }
+
+            if (Math.abs(xf - x0) < h * 0.1) {
+                alert('El intervalo es muy pequeño para el paso dado');
                 return;
             }
 
@@ -124,24 +138,39 @@ const IndexScreen = () => {
 
             let n = 0;
             const maxIter = 1000;
+            const epsilon = h * 0.01; // Tolerancia para comparación
 
-            while (Math.abs(x - xf) > 0.0001 && n < maxIter) {
-                const f_val = evaluarExpresion(customInput.equation, x, y);
-                const k1 = h * f_val;
+            while (n < maxIter) {
+                // Verificar si llegamos al punto final
+                if ((xf >= x0 && x >= xf - epsilon) || (xf < x0 && x <= xf + epsilon)) {
+                    break;
+                }
+
+                // Paso 1: evaluar f(xn, yn) y calcular k1
+                const f_n = evaluarExpresion(customInput.equation, x, y);
+                const k1 = h * f_n;
+
+                // Paso 2: calcular punto medio
                 const x_medio = x + h / 2;
                 const y_medio = y + k1 / 2;
+
+                // Paso 3: evaluar f en el punto medio
                 const f_medio = evaluarExpresion(customInput.equation, x_medio, y_medio);
+
+                // Paso 4: calcular y_next
                 const y_next = y + h * f_medio;
 
                 iteraciones.push({
                     n: n + 1,
                     x: x.toFixed(4),
-                    y: y.toFixed(6),
+                    y: y.toFixed(8),
+                    f_n: f_n.toFixed(8),
                     k1: k1.toFixed(8),
                     x_medio: x_medio.toFixed(4),
                     y_medio: y_medio.toFixed(8),
                     f_medio: f_medio.toFixed(8),
-                    y_next: y_next.toFixed(8)
+                    y_next: y_next.toFixed(8),
+                    x_next: (x + h).toFixed(4)
                 });
 
                 x += h;
@@ -152,7 +181,7 @@ const IndexScreen = () => {
             setCustomResult({
                 iteraciones,
                 resultado_final: y.toFixed(8),
-                x_final: xf.toFixed(4)
+                x_final: x.toFixed(4)
             });
         } catch (error) {
             alert('Error al resolver: ' + error.message);
@@ -185,8 +214,8 @@ const IndexScreen = () => {
                     <div className="bg-indigo-50 border-l-4 border-indigo-600 p-4 rounded">
                         <h2 className="font-semibold text-indigo-900 mb-2">Fórmula del Método:</h2>
                         <div className="font-mono text-sm space-y-2 text-gray-700">
+                            <div>k₁ = h · f(x<sub>n</sub>, y<sub>n</sub>)</div>
                             <div>y<sub>n+1</sub> = y<sub>n</sub> + h · f(x<sub>n</sub> + h/2, y<sub>n</sub> + k₁/2)</div>
-                            <div className="ml-4">donde: k₁ = h · f(x<sub>n</sub>, y<sub>n</sub>)</div>
                         </div>
                     </div>
                 </div>
@@ -197,8 +226,8 @@ const IndexScreen = () => {
                         <button
                             onClick={() => setActiveTab('ejemplo')}
                             className={`flex-1 px-6 py-4 font-semibold transition-colors ${activeTab === 'ejemplo'
-                                ? 'bg-indigo-600 text-white'
-                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                    ? 'bg-indigo-600 text-white'
+                                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                                 }`}
                         >
                             Problema Resuelto
@@ -206,8 +235,8 @@ const IndexScreen = () => {
                         <button
                             onClick={() => setActiveTab('calculadora')}
                             className={`flex-1 px-6 py-4 font-semibold transition-colors ${activeTab === 'calculadora'
-                                ? 'bg-indigo-600 text-white'
-                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                    ? 'bg-indigo-600 text-white'
+                                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                                 }`}
                         >
                             Calculadora Personalizada
@@ -256,6 +285,7 @@ const IndexScreen = () => {
 
                                         <div className="bg-white p-3 rounded border border-indigo-100">
                                             <p className="font-semibold text-indigo-700">Paso 1: Calcular k₁</p>
+                                            <p className="font-mono ml-4 text-sm">f(x<sub>{iter.n - 1}</sub>, y<sub>{iter.n - 1}</sub>) = {iter.f_n}</p>
                                             <p className="font-mono ml-4 text-sm">k₁ = {iter.k1_calc}</p>
                                             <p className="font-mono ml-4">k₁ = {iter.k1}</p>
                                         </div>
@@ -268,13 +298,13 @@ const IndexScreen = () => {
 
                                         <div className="bg-white p-3 rounded border border-indigo-100">
                                             <p className="font-semibold text-indigo-700">Paso 3: Evaluar f en el punto medio</p>
-                                            <p className="font-mono ml-4 text-sm">f({iter.x_medio}, {iter.y_medio}) = -3 × ({iter.x_medio})² × {iter.y_medio}</p>
-                                            <p className="font-mono ml-4">f = {iter.f_medio}</p>
+                                            <p className="font-mono ml-4 text-sm">f({iter.x_medio}, {iter.y_medio}) = {iter.f_medio_calc}</p>
+                                            <p className="font-mono ml-4">f<sub>medio</sub> = {iter.f_medio}</p>
                                         </div>
 
                                         <div className="bg-indigo-100 p-3 rounded border-2 border-indigo-300">
-                                            <p className="font-semibold text-indigo-900">Resultado:</p>
-                                            <p className="font-mono ml-4 text-lg">y<sub>{iter.n}</sub> = {iter.y} + {ejemploData.h} × {iter.f_medio}</p>
+                                            <p className="font-semibold text-indigo-900">Paso 4: Calcular y<sub>n+1</sub></p>
+                                            <p className="font-mono ml-4 text-sm">y<sub>{iter.n}</sub> = {iter.y} + {ejemploData.h} × {iter.f_medio}</p>
                                             <p className="font-mono ml-4 text-xl font-bold text-indigo-700">y<sub>{iter.n}</sub> = {iter.y_next}</p>
                                         </div>
                                     </div>
@@ -297,10 +327,10 @@ const IndexScreen = () => {
                                 <h3 className="text-lg font-bold text-gray-800 mb-3">Instrucciones:</h3>
                                 <ul className="list-disc list-inside space-y-2 text-gray-700 text-sm">
                                     <li>Ingrese la ecuación diferencial como expresión de x e y</li>
-                                    <li>Use ^ para potencias (ejemplo: x^2)</li>
+                                    <li>Use ^ para potencias (ejemplo: x^2) o * para multiplicación</li>
                                     <li>Operadores disponibles: +, -, *, /, ^</li>
                                     <li>Funciones: sin, cos, tan, exp, log, sqrt</li>
-                                    <li>Ejemplo: -3*x^2*y o x + y o sin(x)*y</li>
+                                    <li>Ejemplo: 2*x*y o -3*x^2*y o x + y</li>
                                 </ul>
                             </div>
 
@@ -314,7 +344,7 @@ const IndexScreen = () => {
                                         value={customInput.equation}
                                         onChange={(e) => setCustomInput({ ...customInput, equation: e.target.value })}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                                        placeholder="Ejemplo: -3*x^2*y"
+                                        placeholder="Ejemplo: 2*x*y"
                                     />
                                 </div>
 
@@ -340,7 +370,7 @@ const IndexScreen = () => {
                                         value={customInput.x0}
                                         onChange={(e) => setCustomInput({ ...customInput, x0: e.target.value })}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                                        placeholder="0"
+                                        placeholder="1"
                                     />
                                 </div>
 
@@ -353,7 +383,7 @@ const IndexScreen = () => {
                                         value={customInput.y0}
                                         onChange={(e) => setCustomInput({ ...customInput, y0: e.target.value })}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                                        placeholder="3"
+                                        placeholder="1"
                                     />
                                 </div>
 
@@ -366,7 +396,7 @@ const IndexScreen = () => {
                                         value={customInput.xf}
                                         onChange={(e) => setCustomInput({ ...customInput, xf: e.target.value })}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                                        placeholder="0.5"
+                                        placeholder="1.3"
                                     />
                                 </div>
                             </div>
@@ -384,16 +414,37 @@ const IndexScreen = () => {
                                     <h3 className="text-xl font-bold text-gray-800 mb-4">Resultados:</h3>
 
                                     {customResult.iteraciones.slice(1).map((iter, idx) => (
-                                        <div key={idx} className="bg-gray-50 rounded-lg p-4 mb-3 border border-gray-200">
-                                            <h4 className="font-bold text-indigo-900 mb-2">Iteración {iter.n}:</h4>
-                                            <div className="grid grid-cols-2 gap-2 text-sm font-mono">
-                                                <p>x<sub>{iter.n - 1}</sub> = {iter.x}</p>
-                                                <p>y<sub>{iter.n - 1}</sub> = {iter.y}</p>
-                                                <p>k₁ = {iter.k1}</p>
-                                                <p>x<sub>medio</sub> = {iter.x_medio}</p>
-                                                <p>y<sub>medio</sub> = {iter.y_medio}</p>
-                                                <p>f<sub>medio</sub> = {iter.f_medio}</p>
-                                                <p className="col-span-2 text-indigo-700 font-bold">y<sub>{iter.n}</sub> = {iter.y_next}</p>
+                                        <div key={idx} className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-lg p-4 mb-3 border border-gray-300">
+                                            <h4 className="font-bold text-indigo-900 mb-3">Iteración {iter.n} (n = {iter.n - 1}):</h4>
+                                            <div className="space-y-2 text-sm">
+                                                <div className="bg-white p-2 rounded">
+                                                    <p className="font-semibold text-gray-700">Valores iniciales:</p>
+                                                    <p className="font-mono ml-4">x<sub>{iter.n - 1}</sub> = {iter.x}</p>
+                                                    <p className="font-mono ml-4">y<sub>{iter.n - 1}</sub> = {iter.y}</p>
+                                                </div>
+
+                                                <div className="bg-white p-2 rounded">
+                                                    <p className="font-semibold text-gray-700">Paso 1: Calcular k₁</p>
+                                                    <p className="font-mono ml-4">f(x<sub>{iter.n - 1}</sub>, y<sub>{iter.n - 1}</sub>) = {iter.f_n}</p>
+                                                    <p className="font-mono ml-4">k₁ = h × f = {customInput.h} × {iter.f_n} = {iter.k1}</p>
+                                                </div>
+
+                                                <div className="bg-white p-2 rounded">
+                                                    <p className="font-semibold text-gray-700">Paso 2: Punto medio</p>
+                                                    <p className="font-mono ml-4">x<sub>medio</sub> = {iter.x_medio}</p>
+                                                    <p className="font-mono ml-4">y<sub>medio</sub> = {iter.y_medio}</p>
+                                                </div>
+
+                                                <div className="bg-white p-2 rounded">
+                                                    <p className="font-semibold text-gray-700">Paso 3: Evaluar en punto medio</p>
+                                                    <p className="font-mono ml-4">f<sub>medio</sub> = {iter.f_medio}</p>
+                                                </div>
+
+                                                <div className="bg-indigo-100 p-2 rounded border-2 border-indigo-400">
+                                                    <p className="font-semibold text-indigo-900">Resultado:</p>
+                                                    <p className="font-mono ml-4 text-lg font-bold text-indigo-700">y<sub>{iter.n}</sub> = {iter.y_next}</p>
+                                                    <p className="font-mono ml-4 text-sm text-gray-600">x<sub>{iter.n}</sub> = {iter.x_next}</p>
+                                                </div>
                                             </div>
                                         </div>
                                     ))}
@@ -401,7 +452,7 @@ const IndexScreen = () => {
                                     <div className="bg-green-50 border-2 border-green-400 rounded-lg p-6 mt-4">
                                         <h3 className="text-2xl font-bold text-green-800 mb-2">Resultado Final:</h3>
                                         <p className="text-xl font-mono">
-                                            y({customResult.x_final}) = {customResult.resultado_final}
+                                            y({customResult.x_final}) ≈ {customResult.resultado_final}
                                         </p>
                                     </div>
                                 </div>
