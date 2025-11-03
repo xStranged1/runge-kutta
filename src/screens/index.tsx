@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Calculator, ChevronRight } from 'lucide-react';
 import Latex from "react-latex-next";
 import 'katex/dist/katex.min.css';
+import { Link } from 'wouter';
+import { ModeToggle } from '@/components/mode-toggle';
 
 const IndexScreen = () => {
     const [activeTab, setActiveTab] = useState('ejemplo');
@@ -218,6 +220,8 @@ const IndexScreen = () => {
                             <h1 className="text-4xl font-bold text-gray-800">Método de Runge-Kutta</h1>
                             <p className="text-gray-600">Orden 2 - Resolución de EDO's</p>
                         </div>
+                        <div className='flex-1'></div>
+                        <ModeToggle />
                     </div>
 
                     <div className="bg-indigo-50 border-l-4 border-indigo-600 p-4 rounded">
@@ -227,6 +231,7 @@ const IndexScreen = () => {
                             <div><Latex>{'$y_{n+1} = y_n + h \\cdot f\\left(x_n + \\frac{h}{2}, y_n + \\frac{k_1}{2}\\right)$'}</Latex></div>
                         </div>
                     </div>
+
                 </div>
 
                 {/* Tabs */}
@@ -479,9 +484,18 @@ const IndexScreen = () => {
                                         </p>
                                     </div>
                                 </div>
+
                             )}
                         </div>
+
                     )}
+                </div>
+                <div className="text-center mt-6">
+                    <Link href="/runge-kutta/compare">
+                        <button className="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700">
+                            Ejercicio 2
+                        </button>
+                    </Link>
                 </div>
             </div>
         </div>
