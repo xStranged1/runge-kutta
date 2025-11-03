@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight, Calculator } from "lucide-react";
 import Latex from "react-latex-next";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 
 const sections = [
   // Filmina 1: Introducción a EDO y PVI
@@ -202,6 +202,7 @@ const sections = [
 export default function PresentacionRK2() {
   const [index, setIndex] = useState(0);
   const section = sections[index];
+  const [, setLocation] = useLocation();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
@@ -216,22 +217,30 @@ export default function PresentacionRK2() {
           <div className="text-gray-800 text-lg">{section.content}</div>
         </div>
 
-        <div className="flex justify-between mt-6">
+        <div className="fixed bottom-20 left-0 right-0 flex justify-between px-8 max-w-5xl mx-auto">
+          {/* Botón Anterior */}
           <button
             onClick={() => setIndex(i => Math.max(i - 1, 0))}
             disabled={index === 0}
-            className="px-6 py-3 rounded-xl bg-gray-200 text-gray-800 disabled:opacity-40 hover:bg-gray-300"
+            className="flex items-center px-6 py-3 rounded-xl bg-gray-200 text-gray-800 disabled:opacity-40 hover:bg-gray-300 transition"
           >
-            <ChevronLeft className="inline w-5 h-5 mr-1" />
+            <ChevronLeft className="w-5 h-5 mr-2" />
             Anterior
           </button>
+
+          {/* Botón Siguiente / Finalizar */}
           <button
-            onClick={() => setIndex(i => Math.min(i + 1, sections.length - 1))}
-            disabled={index === sections.length - 1}
-            className="px-6 py-3 rounded-xl bg-indigo-600 text-white disabled:opacity-40 hover:bg-indigo-700"
+            onClick={() => {
+              if (index === sections.length - 1) {
+                setLocation("/runge-kutta");
+              } else {
+                setIndex(i => Math.min(i + 1, sections.length - 1));
+              }
+            }}
+            className="flex items-center px-6 py-3 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 transition"
           >
-            Siguiente
-            <ChevronRight className="inline w-5 h-5 ml-1" />
+            {index === sections.length - 1 ? "Finalizar" : "Siguiente"}
+            {index !== sections.length - 1 && <ChevronRight className="w-5 h-5 ml-2" />}
           </button>
         </div>
       </div>

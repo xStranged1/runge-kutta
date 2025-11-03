@@ -194,10 +194,10 @@ const IndexScreen = () => {
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
             <div className="max-w-7xl mx-auto">
                 <div className="text-center mb-6">
-                    <Link href="/presentacion">
+                    <Link href="/runge-kutta/presentacion">
                         <button className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:scale-105 transition-transform">
-                        Ver Presentación
-                        <ChevronRight className="w-5 h-5" />
+                            Ver Presentación
+                            <ChevronRight className="w-5 h-5" />
                         </button>
                     </Link>
                 </div>
@@ -226,8 +226,8 @@ const IndexScreen = () => {
                         <button
                             onClick={() => setActiveTab('ejemplo')}
                             className={`flex-1 px-6 py-4 font-semibold transition-colors ${activeTab === 'ejemplo'
-                                    ? 'bg-indigo-600 text-white'
-                                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                ? 'bg-indigo-600 text-white'
+                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                                 }`}
                         >
                             Problema Resuelto
@@ -235,8 +235,8 @@ const IndexScreen = () => {
                         <button
                             onClick={() => setActiveTab('calculadora')}
                             className={`flex-1 px-6 py-4 font-semibold transition-colors ${activeTab === 'calculadora'
-                                    ? 'bg-indigo-600 text-white'
-                                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                ? 'bg-indigo-600 text-white'
+                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                                 }`}
                         >
                             Calculadora Personalizada
