@@ -3,6 +3,7 @@ import { Navbar } from "./components/NavBar";
 import { ThemeProvider } from "@/components/theme-provider"
 import { Footer } from "./components/Footer";
 import IndexScreen from "./screens";
+import Presentations from "./screens/Presentation";
 
 export default function App() {
 
@@ -13,6 +14,7 @@ export default function App() {
           <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
           <Switch>
             <Route path="/runge-kutta" component={IndexScreen} />
+            <Route path="/presentacion" component={Presentations} />
             <Route>404: No such page!</Route>
           </Switch>
           <Footer />
