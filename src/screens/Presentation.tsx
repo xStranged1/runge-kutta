@@ -260,29 +260,29 @@ const sections = [
     ),
   },
 
- // Filmina 9: Ejemplo Numérico
-{
-  title: "Ejemplo Numérico",
-  content: (
-    <div className="space-y-8 max-w-5xl mx-auto text-gray-800 py-8">
-      <p className="text-lg text-gray-700">
-        Supongamos <Latex>{`$y' = x + y, \\quad y(0)=1, \\quad h=0.1$`}</Latex>. Calculamos:
-      </p>
-      <FormulaBox
-        title="Paso 1"
-        formula={`$k_1 = h f(x_0, y_0) = 0.1 \\cdot (0 + 1) = 0.1$`}
-      >
-        <p className="text-gray-700">Cálculo de k1 usando los valores iniciales</p>
-      </FormulaBox>
-      <FormulaBox
-        formula={`$k_2 = h f(x_0 + h, y_0 + k_1) = 0.1 \\cdot (0.1 + 1.1) = 0.12$`}
-      />
-      <FormulaBox
-        formula={`$y_1 = y_0 + \\frac{1}{2}(k_1 + k_2) = 1 + 0.5 \\cdot (0.1 + 0.12) = 1.11$`}
-      />
-    </div>
-  ),
-},
+  // Filmina 9: Ejemplo Numérico
+  {
+    title: "Ejemplo Numérico",
+    content: (
+      <div className="space-y-8 max-w-5xl mx-auto text-gray-800 py-8">
+        <p className="text-lg text-gray-700">
+          Supongamos <Latex>{`$y' = x + y, \\quad y(0)=1, \\quad h=0.1$`}</Latex>. Calculamos:
+        </p>
+        <FormulaBox
+          title="Paso 1"
+          formula={`$k_1 = h f(x_0, y_0) = 0.1 \\cdot (0 + 1) = 0.1$`}
+        >
+          <p className="text-gray-700">Cálculo de k1 usando los valores iniciales</p>
+        </FormulaBox>
+        <FormulaBox
+          formula={`$k_2 = h f(x_0 + h, y_0 + k_1) = 0.1 \\cdot (0.1 + 1.1) = 0.12$`}
+        />
+        <FormulaBox
+          formula={`$y_1 = y_0 + \\frac{1}{2}(k_1 + k_2) = 1 + 0.5 \\cdot (0.1 + 0.12) = 1.11$`}
+        />
+      </div>
+    ),
+  },
   // Filmina 10: Resumen
   {
     title: "Resumen RK2",
@@ -323,7 +323,7 @@ export default function PresentacionRK2() {
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <button
-            onClick={() => setLocation("/")}
+            onClick={() => setLocation("/runge-kutta")}
             className="flex items-center px-5 py-3 rounded-xl bg-white text-gray-700 hover:bg-gray-100 transition shadow-md"
           >
             <Home className="w-5 h-5 mr-2" />
