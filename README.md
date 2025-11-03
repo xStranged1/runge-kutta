@@ -1,4 +1,4 @@
-# Metodo Gauss-Seidel
+# Metodo Runge-Kutta
 
 download pnpm: https://pnpm.io/installation
 ```js
