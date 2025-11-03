@@ -212,6 +212,14 @@ const IndexScreen = () => {
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
             <div className="max-w-7xl mx-auto">
+                 <div className="text-center mb-6">
+                    <Link href="/runge-kutta/presentacion">
+                        <button className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:scale-105 transition-transform">
+                            Ver Presentación
+                            <ChevronRight className="w-5 h-5" />
+                        </button>
+                    </Link>
+                </div>
                 {/* Header */}
                 <div className="bg-white rounded-lg shadow-lg p-8 mb-6">
                     <div className="flex items-center gap-4 mb-4">
