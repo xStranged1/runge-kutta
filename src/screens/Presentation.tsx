@@ -88,42 +88,51 @@ const sections = [
     content: (
       <div className="space-y-8 max-w-5xl mx-auto text-gray-800 py-8">
         <p className="text-xl text-center text-gray-600 mb-8">
-          Para aplicar RK2 correctamente necesitamos cumplir ciertas condiciones
+          Para aplicar RK2 necesitamos definir los siguientes elementos
         </p>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-6">
-          <div className="text-center p-6 bg-white rounded-xl shadow-md border-t-4 border-blue-500">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-blue-600 font-bold text-xl">1</span>
-            </div>
-            <h3 className="font-semibold mb-2 text-lg">Continuidad</h3>
-            <p className="text-gray-600 text-lg"><Latex>{`$f(x, y)$`}</Latex> debe ser continua para garantizar resultados confiables</p>
-          </div>
+        <div className="grid md:grid-cols-2 gap-8 mb-6">
+          <FormulaBox
+            title="1. Ecuación Diferencial"
+            formula={`\\( y' = f(x, y(x)) \\)`}
+            color="blue"
+          >
+            <p className="text-gray-700 text-lg">La ecuación diferencial ordinaria que queremos resolver</p>
+          </FormulaBox>
 
-          <div className="text-center p-6 bg-white rounded-xl shadow-md border-t-4 border-green-500">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-green-600 font-bold text-xl">2</span>
-            </div>
-            <h3 className="font-semibold mb-2 text-lg">Valor Inicial</h3>
-            <p className="text-gray-600 text-lg">Debemos conocer <Latex>{`$y_0$`}</Latex> en <Latex>{`$x_0$`}</Latex></p>
-          </div>
+          <FormulaBox
+            title="2. Condición Inicial"
+            formula={`\\( y(x_0) = y_0 \\)`}
+            color="green"
+          >
+            <p className="text-gray-700 text-lg">El punto de partida conocido de la solución</p>
+          </FormulaBox>
+        </div>
 
-          <div className="text-center p-6 bg-white rounded-xl shadow-md border-t-4 border-purple-500">
-            <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-purple-600 font-bold text-xl">3</span>
-            </div>
-            <h3 className="font-semibold mb-2 text-lg">Paso Adecuado</h3>
-            <p className="text-gray-600 text-lg">Elegir tamaño de paso <Latex>{`$h$`}</Latex> apropiado para buena aproximación</p>
-          </div>
+        <div className="grid md:grid-cols-2 gap-8">
+          <FormulaBox
+            title="3. Dominio de Trabajo"
+            formula={`\\( x_0 < x < x_f \\)`}
+            color="purple"
+          >
+            <p className="text-gray-700 text-lg">El intervalo donde calcularemos la solución aproximada</p>
+          </FormulaBox>
+
+          <FormulaBox
+            title="4. Paso de Integración"
+            formula={`\\( h = x_{n+1} - x_n \\)`}
+            color="indigo"
+          >
+            <p className="text-gray-700 text-lg">El tamaño del incremento entre puntos sucesivos para recorrer el dominio</p>
+          </FormulaBox>
         </div>
 
         <div className="bg-green-50 border-l-4 border-green-600 p-6 rounded-lg">
-          <p className="font-semibold text-green-800 text-lg">Cumpliendo estas condiciones obtenemos aproximaciones confiables y estables</p>
+          <p className="font-semibold text-green-800 text-lg">Con estos elementos podemos aplicar RK2 para obtener aproximaciones sucesivas: <Latex>{`$y_1, y_2, ..., y_n$`}</Latex></p>
         </div>
       </div>
     ),
   },
-
   // Filmina 3: Ordenada Genérica
   {
     title: "Fórmula RK2 - Ordenada Genérica",
@@ -216,35 +225,6 @@ const sections = [
     ),
   },
 
-  // Filmina 6: Fórmula Final RK2
-  {
-    title: "Fórmula Final RK2",
-    content: (
-      <div className="space-y-8 max-w-5xl mx-auto text-gray-800 py-8">
-        <FormulaBox
-          title="Fórmula Final"
-          formula={`\\( y_{n+1} = y_n + \\frac{1}{2}(k_1 + k_2) \\)`}
-        >
-          <p className="text-gray-700 text-lg">Promedia las dos pendientes para obtener valor más preciso.</p>
-        </FormulaBox>
-      </div>
-    ),
-  },
-
-  // Filmina 7: Algoritmo Paso a Paso
-  {
-    title: "Algoritmo Paso a Paso",
-    content: (
-      <div className="space-y-8 max-w-5xl mx-auto text-gray-800 py-8">
-        <StepItem number="1" title="Definir PVI" description="Conocer x0, y0 y función f(x,y)" />
-        <StepItem number="2" title="Elegir h" description="Determinar tamaño de paso apropiado" />
-        <StepItem number="3" title="Calcular k1" description="Usar pendiente inicial" />
-        <StepItem number="4" title="Calcular k2" description="Usar pendiente corregida" />
-        <StepItem number="5" title="Actualizar y" description="Promediar k1 y k2 para obtener y_{n+1}" />
-      </div>
-    ),
-  },
-
   // Filmina 8: Ventajas RK2
   {
     title: "Ventajas del Método RK2",
@@ -260,29 +240,6 @@ const sections = [
     ),
   },
 
-  // Filmina 9: Ejemplo Numérico
-  {
-    title: "Ejemplo Numérico",
-    content: (
-      <div className="space-y-8 max-w-5xl mx-auto text-gray-800 py-8">
-        <p className="text-lg text-gray-700">
-          Supongamos <Latex>{`$y' = x + y, \\quad y(0)=1, \\quad h=0.1$`}</Latex>. Calculamos:
-        </p>
-        <FormulaBox
-          title="Paso 1"
-          formula={`$k_1 = h f(x_0, y_0) = 0.1 \\cdot (0 + 1) = 0.1$`}
-        >
-          <p className="text-gray-700">Cálculo de k1 usando los valores iniciales</p>
-        </FormulaBox>
-        <FormulaBox
-          formula={`$k_2 = h f(x_0 + h, y_0 + k_1) = 0.1 \\cdot (0.1 + 1.1) = 0.12$`}
-        />
-        <FormulaBox
-          formula={`$y_1 = y_0 + \\frac{1}{2}(k_1 + k_2) = 1 + 0.5 \\cdot (0.1 + 0.12) = 1.11$`}
-        />
-      </div>
-    ),
-  },
   // Filmina 10: Resumen
   {
     title: "Resumen RK2",
