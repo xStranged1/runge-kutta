@@ -465,7 +465,7 @@ const IndexScreen = () => {
                 <div className="text-center mt-6">
   <Link href="/runge-kutta/compare">
     <button className="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700">
-      Comparar con Euler
+      Ejercicio 2
     </button>
   </Link>
 </div>
